@@ -1,4 +1,4 @@
-package com.back
+package com.back.global.jpa
 
 import org.hibernate.boot.model.FunctionContributions
 import org.hibernate.boot.model.FunctionContributor
@@ -13,7 +13,7 @@ class MariaDBFunctionContributor : FunctionContributor {
             functionContributions.typeConfiguration.basicTypeRegistry
                 .resolve(StandardBasicTypes.BOOLEAN)
         )
-        
+
         // SCORE 함수 등록
         functionContributions.functionRegistry.registerPattern(
             "score",
