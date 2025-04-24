@@ -64,7 +64,7 @@ class PostRepositoryImpl(
 
     private fun applySorting(pageable: Pageable, postsQuery: JPAQuery<Post>, kw: String) {
         for (o in pageable.sort) {
-            if (o.property == "scores" && kw.isNotBlank()) {
+            if (o.property == "score" && kw.isNotBlank()) {
                 // 검색 키워드가 있을 때만 score 계산
 
                 val titleScore = Expressions.numberTemplate(

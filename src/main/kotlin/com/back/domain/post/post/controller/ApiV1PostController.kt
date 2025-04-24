@@ -24,7 +24,8 @@ class ApiV1PostController(
         @RequestParam(value = "size", defaultValue = "30") pageSize: Int,
         @RequestParam(value = "kw", defaultValue = "") kw: String
     ): Page<Post> {
-        val pageable: Pageable = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Order.desc("id")))
+        val pageable: Pageable =
+            PageRequest.of(page - 1, pageSize, Sort.by(Sort.Order.desc("score"), Sort.Order.desc("id")))
 
         return postService.findByKw(kw, pageable)
     }
