@@ -64,36 +64,38 @@ class PostRepositoryImpl(
 
     private fun applySorting(pageable: Pageable, postsQuery: JPAQuery<Post>, kw: String) {
         for (o in pageable.sort) {
-            if (o.property == "score" && kw.isNotBlank()) {
-                // 검색 키워드가 있을 때만 score 계산
+            if (o.property == "score") {
+                if (kw.isNotBlank()) {
+                    // 검색 키워드가 있을 때만 score 계산
 
-                val titleScore = Expressions.numberTemplate(
-                    Double::class.java,
-                    "score({0}, {1})",
-                    QPost.post.title,
-                    kw
-                )
-
-                val contentScore = Expressions.numberTemplate(
-                    Double::class.java,
-                    "score({0}, {1})",
-                    QPost.post.content,
-                    kw
-                )
-
-                val totalScore = Expressions.numberTemplate(
-                    Double::class.java,
-                    "{0} + {1}",
-                    titleScore,
-                    contentScore
-                )
-
-                postsQuery.orderBy(
-                    OrderSpecifier(
-                        if (o.isAscending) Order.ASC else Order.DESC,
-                        totalScore
+                    val titleScore = Expressions.numberTemplate(
+                        Double::class.java,
+                        "score({0}, {1})",
+                        QPost.post.title,
+                        kw
                     )
-                )
+
+                    val contentScore = Expressions.numberTemplate(
+                        Double::class.java,
+                        "score({0}, {1})",
+                        QPost.post.content,
+                        kw
+                    )
+
+                    val totalScore = Expressions.numberTemplate(
+                        Double::class.java,
+                        "{0} + {1}",
+                        titleScore,
+                        contentScore
+                    )
+
+                    postsQuery.orderBy(
+                        OrderSpecifier(
+                            if (o.isAscending) Order.ASC else Order.DESC,
+                            totalScore
+                        )
+                    )
+                }
             } else {
                 // 일반 필드 정렬
                 val pathBuilder: PathBuilder<*> =
