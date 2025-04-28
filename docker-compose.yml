@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   mariadb:
@@ -14,7 +14,17 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - mariadb_1_data:/var/lib/mysql  # 데이터 영속화 볼륨
+      - mariadb_1_data:/var/lib/mysql # 데이터 영속화 볼륨
+
+  redis_1:
+    image: redis:latest
+    container_name: redis_1
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_1_data:/data # 데이터 영속화 볼륨
 
 volumes:
   mariadb_1_data:
+  redis_1_data:

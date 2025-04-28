@@ -1,6 +1,6 @@
 package com.back.domain.post.post.controller
 
-import com.back.domain.post.post.entity.Post
+import com.back.domain.post.post.dto.PostDto
 import com.back.domain.post.post.service.PostService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -23,10 +23,11 @@ class ApiV1PostController(
         @RequestParam(value = "page", defaultValue = "1") page: Int,
         @RequestParam(value = "size", defaultValue = "30") pageSize: Int,
         @RequestParam(value = "kw", defaultValue = "") kw: String
-    ): Page<Post> {
+    ): Page<PostDto> {
         val pageable: Pageable =
             PageRequest.of(page - 1, pageSize, Sort.by(Sort.Order.desc("id")))
 
         return postService.findByKw(kw, pageable)
+            .map { PostDto(it) }
     }
 }
